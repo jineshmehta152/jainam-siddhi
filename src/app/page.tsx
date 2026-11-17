@@ -117,6 +117,10 @@ export default function WeddingInvitation() {
     synthRef.current.prime();
 
     if (audioRef.current) {
+      // Start playback from 1:33 (93 seconds)
+      if (audioRef.current.currentTime === 0) {
+        audioRef.current.currentTime = 93;
+      }
       const p = audioRef.current.play();
       if (p && p.then) {
         p.then(() => {
@@ -607,7 +611,18 @@ export default function WeddingInvitation() {
       </div>
 
       {/* Audio element */}
-      <audio ref={audioRef} id="aud" src={weddingData.music} loop preload="none" />
+      <audio
+        ref={audioRef}
+        id="aud"
+        src={weddingData.music}
+        loop
+        preload="metadata"
+        onLoadedMetadata={() => {
+          if (audioRef.current && audioRef.current.currentTime === 0) {
+            audioRef.current.currentTime = 93;
+          }
+        }}
+      />
 
       {/* Royal Curtain Gatefold Opening (Luxury Mughal Gate Aesthetic) */}
       {!gateGone && (
